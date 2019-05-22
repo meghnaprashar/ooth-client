@@ -165,13 +165,15 @@ class OothClient {
                 stopHeartBeat()
             }
             socket.onmessage = ({ data }) => {
+                console.log("Testing >>>")
                 var { user, msg } = JSON.parse(data)
-                user = user || null
+               
                     if (msg && msg === HEARTBEAT.ping) {
                         // resetHeartBeat()
                         heartBeat(socket)
                         return
                     }
+                    user = user || null
                 return this.next(user)
             }
         }
