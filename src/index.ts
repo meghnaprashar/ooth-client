@@ -53,6 +53,7 @@ export class OothClient {
         const protocol = urlParts.protocol === 'https:' ? 'wss' : 'ws';
         const wsUrl = `${protocol}://${urlParts.host}${urlParts.path}/ws/user`;
         const socket = new WebSocket(wsUrl);
+        console.log("This my OOth CLient Log >>>>>>");
         socket.onerror = (err: Event) => console.error(err);
         socket.onopen = () => {};
         socket.onclose = () => {};
