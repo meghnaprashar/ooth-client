@@ -137,7 +137,6 @@ class OothClient {
         let
             pongTimeout,
             heartBeat = ws => {
-                console.log("Got Ping >>> sending Pong")
                 ws.send(JSON.stringify({ msg: HEARTBEAT.pong }))
                 // prevent the socket connection close
                 clearTimeout(pongTimeout)
@@ -165,7 +164,6 @@ class OothClient {
                 stopHeartBeat()
             }
             socket.onmessage = ({ data }) => {
-                console.log("Testing >>>")
                 var { user, msg } = JSON.parse(data)
                
                     if (msg && msg === HEARTBEAT.ping) {
