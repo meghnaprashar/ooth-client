@@ -129,6 +129,7 @@ class OothClient {
         })
     }
     subscribeStatus() {
+        
         const HEARTBEAT = {
             ping: 'PING',
             pong: 'PONG',
