@@ -133,24 +133,20 @@ class OothClient {
         const HEARTBEAT = {
             ping: 'PING',
             pong: 'PONG',
-            timeout: 31000
+            timeout: 33000
         }
-        let
-            pongTimeout,
-            heartBeat = ws => {
-                ws.send(JSON.stringify({ msg: HEARTBEAT.pong }))
-                // prevent the socket connection close
-                clearTimeout(pongTimeout)
-                // schedule socket connection close
-                pongTimeout = setTimeout(function heartBeatCheck() {
-                    console.log("Socket Closing from client")
-                    // close the socket connection
-                    ws.close()
-                }, HEARTBEAT.timeout)
-            },
-            stopHeartBeat = () => {
-                clearTimeout(pongTimeout)
-            };
+        let pongTimeout
+        const heartBeat = (webSocket) => {
+            webSocket.send(JSON.stringify({ msg: HEARTBEAT.pong }))
+            clearTimeout(pongTimeout)
+            pongTimeout = setTimeout(function heartBeatCheck() {
+                console.log("Socket closing due to client inactivity")
+                webSocket.close()
+            }, HEARTBEAT.timeout)
+        }
+        const stopHeartBeat = () => {
+            clearTimeout(pongTimeout)
+        }
         if (typeof WebSocket !== 'undefined') {
             const urlParts = url.parse(this.oothUrl)
             const protocol = urlParts.protocol === 'https:' ? 'wss' : 'ws'
@@ -165,14 +161,12 @@ class OothClient {
                 stopHeartBeat()
             }
             socket.onmessage = ({ data }) => {
-                var { user, msg } = JSON.parse(data)
-               
-                    if (msg && msg === HEARTBEAT.ping) {
-                        // resetHeartBeat()
-                        heartBeat(socket)
-                        return
-                    }
-                    user = user || null
+                let { user, msg } = JSON.parse(data)
+                if (msg && msg === HEARTBEAT.ping) {
+                    heartBeat(socket)
+                    return
+                }
+                user = user || null
                 return this.next(user)
             }
         }
