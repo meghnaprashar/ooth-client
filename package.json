@@ -4,20 +4,18 @@
   "description": "Ooth client library, wrapper around the ooth API.",
   "main": "lib/index.js",
   "scripts": {
-    "link": "yarn prepublish && yarn link",
-    "prepublish": "yarn build",
     "build": "babel src --out-dir lib --ignore '**/*.test.js'",
     "test": "jest"
   },
   "author": "MRC",
   "license": "MIT",
   "dependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-env": "^1.6.0",
     "isomorphic-fetch": "^2.2.1",
     "rx": "^4.1.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
     "jest": "^21.2.1"
   }
 }
